@@ -1,13 +1,4 @@
-# Sample Hardhat Project
+# Drunkies NFT
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+Test Contract Address - 0xf4ea965657Bdcf1Dfc59F781eaF16409DFe82b16
+Test Contract Etherscan - https://sepolia.etherscan.io/address/0xf4ea965657bdcf1dfc59f781eaf16409dfe82b16#writeContract
