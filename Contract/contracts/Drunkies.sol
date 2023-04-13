@@ -168,19 +168,19 @@ contract Drunkies is ERC721URIStorage, Ownable {
         return _tokenIds.current();
     }
 
-    function getFreeTokenCost(
-        uint256 numberOfTokens
-    ) public view returns (uint256) {
-        uint256 numberOfFreeTokens = IERC721(otherNFTContractAddress).balanceOf(
-            msg.sender
-        );
-        uint256 numberOfPaidTokens = uint256(
-            numberOfTokens.sub(numberOfFreeTokens)
-        );
-        uint256 paidTokensCost = numberOfPaidTokens.mul(0.03 ether);
+    // function getFreeTokenCost(
+    //     uint256 numberOfTokens
+    // ) public view returns (uint256) {
+    //     uint256 numberOfFreeTokens = IERC721(otherNFTContractAddress).balanceOf(
+    //         msg.sender
+    //     );
+    //     uint256 numberOfPaidTokens = uint256(
+    //         numberOfTokens.sub(numberOfFreeTokens)
+    //     );
+    //     uint256 paidTokensCost = numberOfPaidTokens.mul(0.03 ether);
 
-        return paidTokensCost;
-    }
+    //     return paidTokensCost;
+    // }
 
     function buyNFT(uint256 tokenId) public payable {
         require(msg.value == 0.03 ether, "Need to send 0.03 ether");

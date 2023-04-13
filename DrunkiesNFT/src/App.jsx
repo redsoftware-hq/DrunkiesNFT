@@ -204,13 +204,16 @@ function App() {
       const availableFreeTokens =
         await contractConnector.getNumberOfFreeTokens();
 
-      const requiredEth = numberOfTokens - availableFreeTokens.toString();
+      const requiredEth = numberOfTokens - parseInt(availableFreeTokens._hex);
 
       mintingToken = await contractConnector.bulkFreeMintNFT(
         metaHash,
         numberOfTokens,
         {
-          value: ethers.utils.parseUnits(`${requiredEth * 0.03}`, "ether"),
+          value: ethers.utils.parseUnits(
+            `${requiredEth > 0 ? requiredEth * 0.03 : 0}`,
+            "ether"
+          ),
         }
       );
       console.log(`${numberOfTokens} NFT Minted`);
