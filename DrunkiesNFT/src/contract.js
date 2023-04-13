@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 export const contract = {
-  address: "0x558Fca81D24eB9988496Ee70eD204c569c684B32",
+  address: "0xfa953d609AA688bfaf31891d06542D73f8Ac84E0",
   abi: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -208,27 +208,8 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [
-        { internalType: "address", name: "addr", type: "address" },
-        { internalType: "uint256", name: "snapshotId", type: "uint256" },
-      ],
-      name: "getNFTsOwnedByAddress",
-      outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
       inputs: [],
       name: "getNumberOfFreeTokens",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "uint256", name: "snapshotId", type: "uint256" },
-      ],
-      name: "getSnapshotBlockNumber",
       outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
       stateMutability: "view",
       type: "function",
@@ -286,13 +267,6 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "bytes", name: "encodedCSV", type: "bytes" }],
-      name: "processCSVData",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "pure",
-      type: "function",
-    },
-    {
       inputs: [],
       name: "renounceOwnership",
       outputs: [],
@@ -333,15 +307,6 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      name: "snapshots",
-      outputs: [
-        { internalType: "uint256", name: "blockNumber", type: "uint256" },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
       inputs: [
         {
           internalType: "address[]",
@@ -366,13 +331,6 @@ export const contract = {
       name: "symbol",
       outputs: [{ internalType: "string", name: "", type: "string" }],
       stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "takeSnapshot",
-      outputs: [],
-      stateMutability: "nonpayable",
       type: "function",
     },
     {
