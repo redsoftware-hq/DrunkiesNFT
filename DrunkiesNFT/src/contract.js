@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 export const contract = {
-  address: "0xae8dDcc90DBac0007C39FabD838697d7BE795BB7",
+  address: "0x8B1dca461101b71C26f4b97cB874b221514D9598",
   abi: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
