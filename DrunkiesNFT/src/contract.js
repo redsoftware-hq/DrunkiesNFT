@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 export const contract = {
-  address: "0xF2fE2216638b356D5177624fFe0e02e72Ae74037",
+  address: "0x35DeC8647421d0F5C95b8fC9d2275027C0ad7a42",
   abi: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -52,6 +52,25 @@ export const contract = {
         },
       ],
       name: "ApprovalForAll",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "tokenId",
+          type: "uint256",
+        },
+        {
+          indexed: false,
+          internalType: "address",
+          name: "userAddress",
+          type: "address",
+        },
+      ],
+      name: "MintToken",
       type: "event",
     },
     {
@@ -157,24 +176,10 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-      name: "buyNFT",
-      outputs: [],
-      stateMutability: "payable",
-      type: "function",
-    },
-    {
       inputs: [],
       name: "checkFreeMintAvailable",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
       stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "string", name: "tokenURI", type: "string" }],
-      name: "freeMint",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "nonpayable",
       type: "function",
     },
     {
@@ -185,16 +190,16 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
-      name: "getApproved",
+      inputs: [],
+      name: "genesisNFTContractAddress",
       outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
       type: "function",
     },
     {
-      inputs: [{ internalType: "address", name: "addressOf", type: "address" }],
-      name: "getBalanceOfAddress",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+      name: "getApproved",
+      outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
       type: "function",
     },
@@ -217,29 +222,8 @@ export const contract = {
     },
     {
       inputs: [],
-      name: "maxSupply",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "string", name: "tokenURI", type: "string" }],
-      name: "mintNFT",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "payable",
-      type: "function",
-    },
-    {
-      inputs: [],
       name: "name",
       outputs: [{ internalType: "string", name: "", type: "string" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "otherNFTContractAddress",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
       type: "function",
     },
@@ -298,19 +282,6 @@ export const contract = {
       type: "function",
     },
     {
-      inputs: [
-        {
-          internalType: "address[]",
-          name: "walletAddresses",
-          type: "address[]",
-        },
-      ],
-      name: "storeWalletAddress",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
       inputs: [{ internalType: "bytes4", name: "interfaceId", type: "bytes4" }],
       name: "supportsInterface",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
@@ -350,9 +321,18 @@ export const contract = {
       type: "function",
     },
     {
+      inputs: [
+        { internalType: "address", name: "_contractAddress", type: "address" },
+      ],
+      name: "updateGenesisContractAddress",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [{ internalType: "uint256", name: "supply", type: "uint256" }],
       name: "updateMaxSupply",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [],
       stateMutability: "nonpayable",
       type: "function",
     },
@@ -364,8 +344,21 @@ export const contract = {
       type: "function",
     },
     {
+      inputs: [
+        {
+          internalType: "address[]",
+          name: "walletAddresses",
+          type: "address[]",
+        },
+      ],
+      name: "whitelistWalletAddress",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [{ internalType: "address", name: "", type: "address" }],
-      name: "walletExist",
+      name: "whitelistedAddress",
       outputs: [{ internalType: "bool", name: "", type: "bool" }],
       stateMutability: "view",
       type: "function",
