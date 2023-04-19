@@ -177,7 +177,7 @@ function App() {
           walletAddressData = results.data.map((item) => item.HolderAddress);
 
           try {
-            const tx = await contractConnector.storeWalletAddress(
+            const tx = await contractConnector.whitelistWalletAddress(
               walletAddressData
             );
             console.log("Successfully Stored..", tx);

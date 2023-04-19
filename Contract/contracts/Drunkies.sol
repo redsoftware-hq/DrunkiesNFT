@@ -28,6 +28,10 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
         whitelistedAddress[msg.sender] = true;
     }
 
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://ipfs.io/ipfs/";
+    }
+
     function bulkMintNFT(
         string memory tokenURI,
         uint256 numberOfTokens
