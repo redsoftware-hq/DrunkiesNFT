@@ -222,7 +222,7 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
         return _maxSupply;
     }
 
-    function withdraw(address payable recipient) internal onlyOwner {
+    function withdraw(address payable recipient) private {
         uint256 balance = address(this).balance;
         recipient.transfer(balance);
 
