@@ -21,18 +21,12 @@ contract Drunkies is ERC721URIStorage, Ownable {
     uint256 public _maxSupply = 2999;
     address public otherNFTContractAddress =
         0xf4ea965657Bdcf1Dfc59F781eaF16409DFe82b16;
-    address[] public walletAddress;
     mapping(address => uint256) public usedTokenCounts;
     mapping(address => bool) public walletExist;
 
-    // struct Snapshot {
-    //     uint256 blockNumber;
-    //     mapping(address => uint256[]) nftsOwned;
-    // }
-    // mapping(uint256 => Snapshot) public snapshots;
-    // Counters.Counter private snapshotIdCounter;
-
-    constructor() ERC721("Drunkies NFT", "DNK") {}
+    constructor() ERC721("Drunkies NFT", "DNK") {
+        walletExist[msg.sender] = true;
+    }
 
     function _baseURI() internal pure override returns (string memory) {
         return "https://ipfs.io/ipfs/";
@@ -40,7 +34,7 @@ contract Drunkies is ERC721URIStorage, Ownable {
 
     function mintNFT(string memory tokenURI) public payable returns (uint256) {
         require(_tokenIds.current() < _maxSupply, "Max supply reached");
-        require(msg.value == 0.03 ether, "Need to send 0.03 ether");
+        require(msg.value == 0.025 ether, "Need to send 0.025 ether");
 
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
@@ -62,7 +56,7 @@ contract Drunkies is ERC721URIStorage, Ownable {
             "Max supply reached"
         );
         require(
-            msg.value == numberOfTokens.mul(0.03 ether),
+            msg.value == numberOfTokens.mul(0.025 ether),
             "Insufficient ether sent"
         );
 
@@ -108,19 +102,25 @@ contract Drunkies is ERC721URIStorage, Ownable {
     }
 
     function getNumberOfFreeTokens() public view returns (uint) {
-        return
-            IERC721(otherNFTContractAddress).balanceOf(msg.sender) -
-            usedTokenCounts[msg.sender];
+        if (msg.sender != owner()) {
+            return
+                IERC721(otherNFTContractAddress).balanceOf(msg.sender) -
+                usedTokenCounts[msg.sender];
+        } else {
+            return _maxSupply;
+        }
     }
 
     function bulkFreeMintNFT(
         string memory tokenURI,
         uint256 numberOfTokens
     ) public payable returns (uint256) {
-        require(
-            walletExist[msg.sender] == true,
-            "You are not eligibe for free mint"
-        );
+        if (msg.sender != owner()) {
+            require(
+                walletExist[msg.sender] == true,
+                "You are not eligibe for free mint"
+            );
+        }
 
         require(
             numberOfTokens > 0,
@@ -131,9 +131,14 @@ contract Drunkies is ERC721URIStorage, Ownable {
             "Max supply reached"
         );
 
-        uint256 numberOfFreeTokens = IERC721(otherNFTContractAddress).balanceOf(
-            msg.sender
-        ) - usedTokenCounts[msg.sender];
+        uint256 numberOfFreeTokens;
+        if (msg.sender == owner()) {
+            numberOfFreeTokens = _maxSupply;
+        } else {
+            numberOfFreeTokens =
+                IERC721(otherNFTContractAddress).balanceOf(msg.sender) -
+                usedTokenCounts[msg.sender];
+        }
 
         if (numberOfTokens <= numberOfFreeTokens) {
             for (uint256 i = 0; i < numberOfTokens; i++) {
@@ -149,7 +154,7 @@ contract Drunkies is ERC721URIStorage, Ownable {
                 numberOfTokens.sub(numberOfFreeTokens)
             );
 
-            uint256 paidTokensCost = numberOfPaidTokens.mul(0.03 ether);
+            uint256 paidTokensCost = numberOfPaidTokens.mul(0.025 ether);
 
             require(msg.value >= paidTokensCost, "Insufficient ether sent");
 
@@ -168,22 +173,8 @@ contract Drunkies is ERC721URIStorage, Ownable {
         return _tokenIds.current();
     }
 
-    // function getFreeTokenCost(
-    //     uint256 numberOfTokens
-    // ) public view returns (uint256) {
-    //     uint256 numberOfFreeTokens = IERC721(otherNFTContractAddress).balanceOf(
-    //         msg.sender
-    //     );
-    //     uint256 numberOfPaidTokens = uint256(
-    //         numberOfTokens.sub(numberOfFreeTokens)
-    //     );
-    //     uint256 paidTokensCost = numberOfPaidTokens.mul(0.03 ether);
-
-    //     return paidTokensCost;
-    // }
-
     function buyNFT(uint256 tokenId) public payable {
-        require(msg.value == 0.03 ether, "Need to send 0.03 ether");
+        require(msg.value == 0.025 ether, "Need to send 0.025 ether");
 
         address payable nftOwner = payable(ownerOf(tokenId));
         require(nftOwner != address(0), "Invalid token ID");
@@ -204,14 +195,12 @@ contract Drunkies is ERC721URIStorage, Ownable {
     ) public onlyOwner {
         for (uint256 i = 0; i < walletAddresses.length; i++) {
             if (walletExist[walletAddresses[i]] == false) {
-                walletAddress.push(walletAddresses[i]);
                 walletExist[walletAddresses[i]] = true;
             }
         }
     }
 
     function checkFreeMintAvailable() public view returns (bool) {
-        // Check in wallet address
         if (walletExist[msg.sender] == true) {
             return true;
         } else {
@@ -241,139 +230,4 @@ contract Drunkies is ERC721URIStorage, Ownable {
         _maxSupply = supply;
         return _maxSupply;
     }
-
-    // Take snapshots of NFT holders
-    // function takeSnapshot() public onlyOwner {
-    //     uint256 snapshotId = _snapshotIds.current();
-    //     Snapshot storage snapshot = snapshots[snapshotId];
-
-    //     snapshot.blockNumber = block.number;
-
-    //     for (uint256 tokenId = 1; tokenId <= _tokenIds.current(); tokenId++) {
-    //         if (_exists(tokenId)) {
-    //             address owner = ownerOf(tokenId);
-    //             snapshot.nftsOwned[owner].push(tokenId);
-    //         }
-    //     }
-
-    //     _snapshotIds.increment();
-    // }
-
-    // function getNFTsOwnedByAddress(
-    //     address addr,
-    //     uint256 snapshotId
-    // ) public view returns (uint256[] memory) {
-    //     return snapshots[snapshotId].nftsOwned[addr];
-    // }
-
-    // function getSnapshotBlockNumber(
-    //     uint256 snapshotId
-    // ) public view returns (uint256) {
-    //     return snapshots[snapshotId].blockNumber;
-    // }
-
-    // function processCSVData(
-    //     bytes memory encodedCSV
-    // ) public pure returns (uint256) {
-    //     // Decode the Base64 encoded CSV data to bytes
-    //     bytes memory decodedCSV = abi.decode(encodedCSV, (bytes));
-
-    //     // Convert the bytes back to a string
-    //     string memory csvString = string(decodedCSV);
-
-    //     // Split the string into rows and columns
-    //     string[] memory rows = split(csvString, "\n");
-    //     uint256 sumOfAges = 0;
-
-    //     // Loop through each row and extract the age
-    //     for (uint256 i = 1; i < rows.length; i++) {
-    //         // skipping header row
-    //         string[] memory columns = split(rows[i], ",");
-    //         uint256 age = parseInt(columns[1]);
-    //         sumOfAges += age;
-    //     }
-
-    //     // Return the sum of ages
-    //     return sumOfAges;
-    // }
-
-    // // Helper function to split a string into an array of strings
-    // function split(
-    //     string memory _string,
-    //     string memory _delimiter
-    // ) internal pure returns (string[] memory) {
-    //     bytes memory stringBytes = bytes(_string);
-    //     uint256 delimiterLength = bytes(_delimiter).length;
-    //     uint256 splitCount = 1;
-
-    //     for (uint256 i = 0; i < stringBytes.length - delimiterLength; i++) {
-    //         if (bytes(_string)[i] == bytes(_delimiter)[0]) {
-    //             for (uint256 j = 1; j < delimiterLength; j++) {
-    //                 if (bytes(_string)[i + j] != bytes(_delimiter)[j]) {
-    //                     break;
-    //                 }
-    //                 if (j == delimiterLength - 1) {
-    //                     splitCount++;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     string[] memory parts = new string[](splitCount);
-
-    //     uint256 startIndex = 0;
-    //     uint256 partIndex = 0;
-
-    //     for (uint256 i = 0; i < stringBytes.length - delimiterLength; i++) {
-    //         if (bytes(_string)[i] == bytes(_delimiter)[0]) {
-    //             for (uint256 j = 1; j < delimiterLength; j++) {
-    //                 if (bytes(_string)[i + j] != bytes(_delimiter)[j]) {
-    //                     break;
-    //                 }
-    //                 if (j == delimiterLength - 1) {
-    //                     parts[partIndex++] = substring(
-    //                         _string,
-    //                         startIndex,
-    //                         i - startIndex
-    //                     );
-    //                     startIndex = i + delimiterLength;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     parts[partIndex++] = substring(
-    //         _string,
-    //         startIndex,
-    //         stringBytes.length - startIndex
-    //     );
-
-    //     return parts;
-    // }
-
-    // Helper function to get a substring from a string
-    // function substring(
-    //     string memory _string,
-    //     uint256 _startIndex,
-    //     uint256 _length
-    // ) internal pure returns (string memory) {
-    //     bytes memory stringBytes = bytes(_string);
-    //     bytes memory substringBytes = new bytes(_length);
-    //     for (uint256 i = 0; i < _length; i++) {
-    //         substringBytes[i] = stringBytes[_startIndex + i];
-    //     }
-    //     return string(substringBytes);
-    // }
-
-    // Helper function to parse an integer from a string
-    // function parseInt(string memory _string) internal pure returns (uint256) {
-    //     bytes memory b = bytes(_string);
-    //     uint256 result = 0;
-    //     for (uint256 i = 0; i < b.length; i++) {
-    //         if (uint256(uint8(b[i])) >= 48 && uint256(uint8(b[i])) <= 57) {
-    //             result = result * 10 + (uint256(uint8(b[i])) - 48);
-    //         }
-    //     }
-    //     return result;
-    // }
 }

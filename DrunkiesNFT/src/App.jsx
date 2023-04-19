@@ -73,7 +73,7 @@ function App() {
         console.log(`NFT Minted With Token ID`, mintingToken);
       } else {
         mintingToken = await contractConnector.mintNFT(metaHash, {
-          value: ethers.utils.parseUnits("0.03", "ether"),
+          value: ethers.utils.parseUnits("0.025", "ether"),
         });
         console.log("NFT Minted With Token ID", mintingToken);
       }
@@ -89,9 +89,9 @@ function App() {
       if (error.message.includes("insufficient funds")) {
         console.log("Insufficient funds");
         setError("Insufficient funds");
-      } else if (error.message.includes("Need to send 0.03 ether")) {
-        console.log("Need to send 0.03 ether");
-        setError("Need to send 0.03 ether");
+      } else if (error.message.includes("Need to send 0.025 ether")) {
+        console.log("Need to send 0.025 ether");
+        setError("Need to send 0.025 ether");
       } else if (error.message.includes("Invalid token ID")) {
         console.log("Invalid token ID");
         setError("Invalid token ID");
@@ -115,7 +115,7 @@ function App() {
       let tokenId = tokenIdState.toString();
 
       const buyingToken = await contractConnector.buyNFT(tokenId, {
-        value: ethers.utils.parseUnits("0.03", "ether"),
+        value: ethers.utils.parseUnits("0.025", "ether"),
       });
 
       await provider.waitForTransaction(buyingToken.hash);
@@ -124,9 +124,9 @@ function App() {
       if (error.message.includes("insufficient funds")) {
         console.log("Insufficient funds");
         setError("Insufficient funds");
-      } else if (error.message.includes("Need to send 0.03 ether")) {
-        console.log("Need to send 0.03 ether");
-        setError("Need to send 0.03 ether");
+      } else if (error.message.includes("Need to send 0.025 ether")) {
+        console.log("Need to send 0.025 ether");
+        setError("Need to send 0.025 ether");
       } else if (error.message.includes("Invalid token ID")) {
         console.log("Invalid token ID");
         setError("Invalid token ID");
@@ -211,7 +211,7 @@ function App() {
         numberOfTokens,
         {
           value: ethers.utils.parseUnits(
-            `${requiredEth > 0 ? requiredEth * 0.03 : 0}`,
+            `${requiredEth > 0 ? requiredEth * 0.025 : 0}`,
             "ether"
           ),
         }
@@ -222,7 +222,7 @@ function App() {
         metaHash,
         numberOfTokens,
         {
-          value: ethers.utils.parseUnits(`${numberOfTokens * 0.03}`, "ether"),
+          value: ethers.utils.parseUnits(`${numberOfTokens * 0.025}`, "ether"),
         }
       );
       console.log(`${numberOfTokens} NFT Minted`);
