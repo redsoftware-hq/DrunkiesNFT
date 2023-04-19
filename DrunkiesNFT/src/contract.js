@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 export const contract = {
-  address: "0x8B1dca461101b71C26f4b97cB874b221514D9598",
+  address: "0xF2fE2216638b356D5177624fFe0e02e72Ae74037",
   abi: [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -360,13 +360,6 @@ export const contract = {
       inputs: [{ internalType: "address", name: "", type: "address" }],
       name: "usedTokenCounts",
       outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      name: "walletAddress",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
       stateMutability: "view",
       type: "function",
     },

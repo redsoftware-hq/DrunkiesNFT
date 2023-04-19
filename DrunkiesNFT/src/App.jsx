@@ -174,7 +174,7 @@ function App() {
         skipEmptyLines: true,
         complete: async function (results) {
           //   debugger;
-          walletAddressData = results.data.map((item) => item.wallet_address);
+          walletAddressData = results.data.map((item) => item.HolderAddress);
 
           try {
             const tx = await contractConnector.storeWalletAddress(
