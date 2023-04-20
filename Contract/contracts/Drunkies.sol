@@ -39,7 +39,7 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
             "Max supply reached"
         );
         require(
-            msg.value == numberOfTokens.mul(0.025 ether),
+            msg.value >= numberOfTokens.mul(0.025 ether),
             "Insufficient ether sent"
         );
 
