@@ -19,7 +19,9 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
     uint256 public freeMintLimit = 1;
     uint256 public _maxSupply = 2999;
     address public genesisNFTContractAddress =
-        0xf4ea965657Bdcf1Dfc59F781eaF16409DFe82b16;
+        0x8A787dADB36fE6ABA8eD99dC135514e0e3019eb4;
+    string public tokenURI =
+        "https://ipfs.io/ipfs/QmfGCSSTFSREL4ECqTfcTggEHSMyeDzqpiVr5SrUsptbK1";
 
     mapping(address => uint256) public usedTokenCounts;
     mapping(address => bool) public whitelistedAddress;
@@ -28,12 +30,7 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
         whitelistedAddress[msg.sender] = true;
     }
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "https://ipfs.io/ipfs/";
-    }
-
     function bulkMintNFT(
-        string memory tokenURI,
         uint256 numberOfTokens
     ) public payable returns (uint256) {
         require(
@@ -71,7 +68,6 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
     }
 
     function bulkFreeMintNFT(
-        string memory tokenURI,
         uint256 numberOfTokens
     ) public payable returns (uint256) {
         require(
@@ -184,5 +180,9 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
         address _contractAddress
     ) public onlyOwner {
         genesisNFTContractAddress = _contractAddress;
+    }
+
+    function updateTokenURI(string memory _tokenURI) public onlyOwner {
+        tokenURI = _tokenURI;
     }
 }
