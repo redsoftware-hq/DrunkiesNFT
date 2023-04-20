@@ -25,6 +25,7 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
 
     mapping(address => uint256) public usedTokenCounts;
     mapping(address => bool) public whitelistedAddress;
+    mapping(uint => address) public nftListed;
 
     constructor() ERC721("Drunkies NFT", "DNK") {
         whitelistedAddress[msg.sender] = true;
@@ -130,22 +131,31 @@ contract Drunkies is ERC721URIStorage, Ownable, ReentrancyGuard {
         return _tokenIds.current();
     }
 
-    // function buyNFT(uint256 tokenId) public payable {
-    //     require(msg.value == 0.025 ether, "Need to send 0.025 ether");
+    function listNftForSale(uint _tokenId) public {
+        address payable nftOwner = payable(ownerOf(_tokenId));
+        require(nftOwner == msg.sender, "You are not Owner of this NFT!");
+        nftListed[_tokenId] = msg.sender;
+    }
 
-    //     address payable nftOwner = payable(ownerOf(tokenId));
-    //     require(nftOwner != address(0), "Invalid token ID");
-    //     require(nftOwner != msg.sender, "You cannot buy your own token");
+    function buyNFT(uint256 tokenId) public payable {
+        address payable nftOwner = payable(ownerOf(tokenId));
+        require(nftOwner != address(0), "Invalid token ID");
+        require(nftOwner != msg.sender, "You cannot buy your own token");
+        require(
+            nftListed[tokenId] == nftOwner,
+            "This NFT is not listed for sale!"
+        );
+        require(msg.value == 0.025 ether, "Need to send 0.025 ether");
 
-    //     // Calculate and transfer royalty to contract owner
-    //     uint256 royaltyAmount = msg.value.mul(5).div(100);
-    //     uint256 paymentAmount = msg.value.sub(royaltyAmount);
+        // Calculate and transfer royalty to contract owner
+        uint256 royaltyAmount = msg.value.mul(5).div(100);
+        uint256 paymentAmount = msg.value.sub(royaltyAmount);
 
-    //     payable(owner()).transfer(royaltyAmount);
-    //     nftOwner.transfer(paymentAmount);
+        payable(owner()).transfer(royaltyAmount);
+        nftOwner.transfer(paymentAmount);
 
-    //     _transfer(nftOwner, msg.sender, tokenId);
-    // }
+        _transfer(nftOwner, msg.sender, tokenId);
+    }
 
     function whitelistWalletAddress(
         address[] memory walletAddresses
